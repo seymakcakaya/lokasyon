@@ -1,0 +1,16 @@
+Projede ekteki dosyada bulunan bilgileri bir veri tabanına yükleyip Rest servis olarak dışarı açmanı bekliyoruz.
+
+İstekler;
+İllerin listelenmesi
+İllere ait ilçelerin listelenmesi
+İlçelere ait Mahallelerin listelenmesi
+Teknolojiler;
+ Java 21, Spring Boot 3
+Spring Cache, Spring Data JDBC
+PostgreSql
+Springdoc (Swagger Dokümantasyonu)
+Junit 5, Mockito
+Notlar;
+Beklentimiz projenin tamamlanması olsa da, maksimum geliştirme hedeflenmeli.
+İl bilgileri cache'ten okunabilmeli.
+Controller ve Service katmanınlarına dair en az birer birim test yazılmalı.
