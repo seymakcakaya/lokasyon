@@ -9,7 +9,6 @@ import com.lokasyon.lokasyon.service.ILokasyonService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,9 +52,9 @@ public class LokasyonController {
     }
     @GetMapping("/locations")
 
-    @Operation(summary = "List Of City", description = "Bu method  veritabanındaki tüm lokasyonları listeler")
-    public ResponseEntity<List<LocationDto>> getLocations() {
-        return ResponseEntity.ok(lokasyonService.getLocations());
+    @Operation(summary = "Lokasyon Bilgileri", description = "Bu method  belirli şehirdeki tüm lokasyonları listeler")
+    public ResponseEntity<List<LocationDto>> getLocations(@RequestParam String city) {
+        return ResponseEntity.ok(lokasyonService.getLocations(city));
     }
 
 

@@ -46,7 +46,7 @@ public class LokasyonService implements ILokasyonService {
     }
 
     @Override
-    public List<LocationDto> getLocations() {
-        return repository.getAllLocation();
+    public List<LocationDto> getLocations(String city) {
+        return repository.getAllLocation(city);
     }
 }

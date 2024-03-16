@@ -13,7 +13,7 @@ public interface ILokasyonService {
     public List<DistrictDto> getDistrictsByCity(String city);
     public List<NeighborhoodDto> getNeighborhoodsByTown(String city,String town);
     public List<LocationDto> getLocationByZipCode(String zipcode);
-    public List<LocationDto> getLocations();
+    public List<LocationDto> getLocations(String city);
 
 
 }

@@ -27,9 +27,9 @@ public interface LokasyonRepository extends CrudRepository<Lokasyon,Long> {
     public List<NeighborhoodDto> getNeighborhoodsByTown(@Param("city")String city,@Param("town")String town);
 
 
-    @Query("select city,district,town,neighborhood,zip_code from Lokasyon zip_code is null or zip_code =: code")
+    @Query("select city,district,town,neighborhood,zip_code from Lokasyon where zip_code =:code")
     List<LocationDto> findLocationByZipCode(@Param("code") String zipcode);
 
-    @Query("select city,district,town,neighborhood,zip_code from lokasyon")
-    List<LocationDto> getAllLocation();
+    @Query("select city,district,town,neighborhood,zip_code from lokasyon where city =:pCity")
+    List<LocationDto> getAllLocation(@Param("pCity") String city);
 }
