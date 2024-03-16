@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+//Loglama eklenebilir AOP kullanarak
+//Exception yapısı ekle dedi
 
 @Service
 public class LokasyonService implements ILokasyonService {
