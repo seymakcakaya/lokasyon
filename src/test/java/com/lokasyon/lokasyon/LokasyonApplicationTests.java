@@ -9,5 +9,8 @@ class LokasyonApplicationTests {
 	@Test
 	void contextLoads() {
 	}
+	void getAllCities(){
+
+	}
 
 }
