@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface LokasyonRepository extends CrudRepository<Lokasyon, Long> {
 
-    @Query("select distinct (city) from Lokasyon order by city asc")
+    @Query("select new com.lokasyon.lokasyon.dto.CityDto (city) from Lokasyon group by city order by city asc")
     List<CityDto> getAllCity();
 
 
