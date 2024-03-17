@@ -4,7 +4,6 @@ import com.lokasyon.lokasyon.dto.CityDto;
 import com.lokasyon.lokasyon.dto.DistrictDto;
 import com.lokasyon.lokasyon.dto.LocationDto;
 import com.lokasyon.lokasyon.dto.NeighborhoodDto;
-import com.lokasyon.lokasyon.exception.NeighborhoodNotFoundException;
 import com.lokasyon.lokasyon.exception.NotFoundException;
 import com.lokasyon.lokasyon.repository.LokasyonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,30 +32,38 @@ public class LokasyonServiceImpl implements LokasyonService {
 
     @Override
     public List<DistrictDto> getDistrictsByCity(String city) {
-
-        return repository.getDistrictsByCity(city.toUpperCase()).get();
+        List<DistrictDto> districtDtos = repository.getDistrictsByCity(city.toUpperCase());
+        if (districtDtos.isEmpty()) {
+            throw new NotFoundException("arama sonucunda ilçe bulunamdı");
+        }
+        return districtDtos;
     }
 
     @Override
     public List<NeighborhoodDto> getNeighborhoodsByTown(String city, String town) {
-        List<NeighborhoodDto> neighborhoodList = repository.getNeighborhoodsByTown(city.toUpperCase(), town.toUpperCase())
-                .orElseThrow(() -> new NeighborhoodNotFoundException("Arama sonucunda mahalle bulunamadı"));
-        return neighborhoodList;
+//        if (districtDtos.isEmpty()){
+//            throw new NotFoundException("arama sonucunda ilçe bulunamdı");
+//        }
+        return repository.getNeighborhoodsByTown(city.toUpperCase(), town.toUpperCase());
     }
 
     @Override
     public List<LocationDto> getLocationByZipCode(String zipcode) {
-        List<LocationDto> locationList = repository.findLocationByZipCode(zipcode)
-                .orElseThrow(() -> new NotFoundException("Girilen %s numaraları zip koduna ait lokasyon bulunamadı", zipcode));
-        return locationList;
+        //        if (districtDtos.isEmpty()){
+//            throw new NotFoundException("arama sonucunda ilçe bulunamdı");
+//        }
+        return repository.findLocationByZipCode(zipcode);
+
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<LocationDto> getLocations(String city) {
-        List<LocationDto> locationList = repository.getAllLocation(city.toUpperCase())
-                .orElseThrow(() -> new NotFoundException("Girilen %s şehrine ait lokasyon bulunamadı", city.toUpperCase()));
-        return locationList;
+        List<LocationDto> locationDtoList = repository.getAllLocation(city.toUpperCase());
+        if (locationDtoList.isEmpty()) {
+           throw  new NotFoundException("Girilen %s şehre   ait lokasyon bulunamadı", city);
+        }
+        return locationDtoList;
     }
 
     @Override

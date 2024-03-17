@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/lokasyon")
+@RequestMapping("/api/lokasyon")
 
 public class LokasyonController {
 
-    private LokasyonService lokasyonService;
+    private final LokasyonService lokasyonService;
 
     @Autowired
     public LokasyonController(LokasyonService lokasyonService) {
@@ -38,21 +38,21 @@ public class LokasyonController {
     @Operation(summary = "List Of district", description = "Bu method belirli şehire ait tüm ilçeleri listeler")
     public ResponseEntity<List<DistrictDto>> getAllDistricts(@PathVariable("city") String city) {
         List<DistrictDto> districList=lokasyonService.getDistrictsByCity(city);
-        if (districList==null)
-            return new ResponseEntity<>(districList, HttpStatus.NOT_FOUND);
         return  new ResponseEntity<>(districList, HttpStatus.OK);
     }
 
     @GetMapping("/neighborhoods")
     @Operation(summary = "List Of neighborhood", description = "Bu method ilçelere ait mahalleri listeler")
-    public ResponseEntity<List<NeighborhoodDto> >getAllneighborhood(@RequestParam(value = "city", required = true) String city, @RequestParam(value = "district", required = true) String district) {
-        return ResponseEntity.ok(lokasyonService.getNeighborhoodsByTown(city, district));
+    public ResponseEntity<List<NeighborhoodDto> >getAlleighborhood(@RequestParam(value = "city") String city, @RequestParam(value = "town") String town) {
+        return ResponseEntity.ok(lokasyonService.getNeighborhoodsByTown(city, town));
     }
     @GetMapping("/locations")
     @Operation(summary = "List Of Location", description = "Bu method posta konuna göre tüm lokasyonları  listeler")
     public ResponseEntity<List<LocationDto>> getLocationByZipCode(@RequestParam(value = "code") String code ) {
+
             List<LocationDto>locationDtoList =  lokasyonService.getLocationByZipCode(code);
             return new ResponseEntity<>(locationDtoList,HttpStatus.OK);
+
     }
     @GetMapping("/{city}/locations")
     @Operation(summary = "Lokasyon Bilgileri", description = "Bu method  belirli şehirdeki tüm lokasyonları listeler")
