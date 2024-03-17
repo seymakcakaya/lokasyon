@@ -1,4 +1,12 @@
 package com.lokasyon.lokasyon.dto;
 
-public record NeighborhoodDto(String neighborhood) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class NeighborhoodDto {
+  private   String neighborhood;
 }

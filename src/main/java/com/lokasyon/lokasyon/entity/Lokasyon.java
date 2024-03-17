@@ -1,20 +1,19 @@
 package com.lokasyon.lokasyon.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
 
-@AllArgsConstructor
-@Getter
-@Setter
+
+@Data
 @ToString
 @Table(name = "lokasyon")
+@Entity
 public class Lokasyon {
+
     @Id
     private Long id;
     private String city;
@@ -22,7 +21,7 @@ public class Lokasyon {
     private String district;
     private String town;
     private String neighborhood;
-    @Column(value = "zip_code")
+    @Column(name = "zip_code")
     private String zipCode;
 
 }
