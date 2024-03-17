@@ -15,7 +15,6 @@ public class Lokasyon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String city;
-
     private String district;
     private String town;
     private String neighborhood;

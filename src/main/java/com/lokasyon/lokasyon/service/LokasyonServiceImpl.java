@@ -53,7 +53,7 @@ public class LokasyonServiceImpl implements LokasyonService {
     @Override
     public List<LocationDto> findLocationsByZipCode(String zipcode) {
         List<LocationDto> locationDtoList = repository.findLocationsByZipCode(zipcode);
-                if (locationDtoList.isEmpty()){
+        if (locationDtoList.isEmpty()) {
             throw new NotFoundException("Girilen %s numaraları zip koduna ait lokasyon bulunamadı", zipcode);
         }
         return locationDtoList;
@@ -65,7 +65,7 @@ public class LokasyonServiceImpl implements LokasyonService {
     public List<LocationDto> getAllLocationsByCity(String city) {
         List<LocationDto> locationDtoList = repository.getAllLocationsByCity(city.toUpperCase());
         if (locationDtoList.isEmpty()) {
-           throw  new NotFoundException("Girilen %s şehre   ait lokasyon bulunamadı", city);
+            throw new NotFoundException("Girilen %s şehre   ait lokasyon bulunamadı", city);
         }
         return locationDtoList;
     }
