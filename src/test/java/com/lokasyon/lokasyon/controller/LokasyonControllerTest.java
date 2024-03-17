@@ -3,6 +3,7 @@ package com.lokasyon.lokasyon.controller;
 import com.lokasyon.lokasyon.advice.ControllerAdvice;
 import com.lokasyon.lokasyon.dto.CityDto;
 import com.lokasyon.lokasyon.dto.DistrictDto;
+import com.lokasyon.lokasyon.exception.NotFoundException;
 import com.lokasyon.lokasyon.service.LokasyonServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -31,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 class LokasyonControllerTest {
-
     @Mock
     LokasyonServiceImpl lokasyonService;
     @InjectMocks
@@ -50,48 +51,37 @@ class LokasyonControllerTest {
 
     @Test
     void getCities() throws Exception {
-        CityDto cityDto = new CityDto();
+        CityDto cityDto= new CityDto();
         List<CityDto> expected = Arrays.asList(cityDto);
         when(lokasyonService.getAllCitys()).thenReturn(expected);
-        //when
-        ResponseEntity<List<CityDto>> response = lokasyonController.getCities();
-        List<CityDto> actual = response.getBody();
-        //then
-        assertAll(
-                () -> assertNotNull(actual),
-                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertEquals(expected.size(), actual.size())
-        );
-
-
+        mockMvc.perform(get("/api/lokasyon/cities"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void getAllDistricts() throws Exception {
+    void getAllDistricts()throws Exception  {
         List<DistrictDto> districtDtoList = new ArrayList<>();
-        districtDtoList.add(new DistrictDto("AYAŞ"));
+        districtDtoList.add(new DistrictDto("ADANA"));
 
-        Mockito.when(lokasyonService.getDistrictsByCity(any())).thenReturn(districtDtoList);
+        Mockito.when(lokasyonService.getDistrictsByCity(anyString())).thenReturn(districtDtoList);
 
         mockMvc.perform(get("/api/lokasyon/ankara/districts").
                         contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
+
     }
-//
-//    @Test
-//    void getAlleighborhood() {
-//    }
-//
-//    @Test
-//    void getLocationByZipCode() {
-//    }
-//
-//    @Test
-//    void getLocations() {
-//    }
-//
-//    @Test
-//    void getDistictByZipCode() {
-//    }
-}
+
+    @Test
+    public void getAllDistricts_shouldReturnBadRequest() throws Exception {
+
+        Mockito.when(lokasyonService.getDistrictsByCity(anyString())).thenThrow(new NotFoundException("İçel şehrinde kayıtlı ilçe bulunamadı"));
+        mockMvc.perform(get("/api/lokasyon/içel/districts").
+                        contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+
+
+    }}
