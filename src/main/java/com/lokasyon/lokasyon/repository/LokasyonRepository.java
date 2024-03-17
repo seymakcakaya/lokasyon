@@ -20,17 +20,18 @@ public interface LokasyonRepository extends CrudRepository<Lokasyon, Long> {
     @Query("select distinct (city) from Lokasyon order by city asc")
     List<CityDto> getAllCity();
 
+
     @Query("select distinct (district) from Lokasyon  where city = :p_city  ")
-    Optional<List<DistrictDto>> getDistrictsByCity(@Param("p_city") String city);
+    List<DistrictDto> getDistrictsByCity(@Param("p_city") String city);
 
     @Query("select distinct (neighborhood) from Lokasyon  where city=:city and town=:town order by neighborhood ")
-    Optional<List<NeighborhoodDto>> getNeighborhoodsByTown(@Param("city") String city, @Param("town") String town);
+  List<NeighborhoodDto> getNeighborhoodsByTown(@Param("city") String city, @Param("town") String town);
 
     @Query("select city,district,town,neighborhood,zip_code from Lokasyon where zip_code =:code")
-    Optional<List<LocationDto>> findLocationByZipCode(@Param("code") String zipcode);
+   List<LocationDto> findLocationByZipCode(@Param("code") String zipcode);
 
     @Query("select city,district,town,neighborhood,zip_code from lokasyon where city =:pCity")
-    Optional<List<LocationDto>> getAllLocation(@Param("pCity") String city);
+    List<LocationDto> getAllLocation(@Param("pCity") String city);
 
     @Query("select  city,district,town, zip_code from lokasyon  where zip_code=:code group by city,district,town, zip_code ;")
     Optional<LocationDto> getCityAndDistrictByZipCode(@Param("code") String zipcode);
