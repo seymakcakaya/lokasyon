@@ -3,7 +3,6 @@ package com.lokasyon.lokasyon;
 import com.lokasyon.lokasyon.controller.LokasyonController;
 import com.lokasyon.lokasyon.dto.CityDto;
 import com.lokasyon.lokasyon.dto.DistrictDto;
-import com.lokasyon.lokasyon.dto.LocationDto;
 import com.lokasyon.lokasyon.exception.NotFoundException;
 import com.lokasyon.lokasyon.service.LokasyonService;
 import org.junit.jupiter.api.Test;
@@ -11,8 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,11 +25,12 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 
-public class LokasyonControllerTest {
+public class LokasyonControllerTestSeyma {
     @Mock
     LokasyonService lokasyonService;
     @InjectMocks
     LokasyonController lokasyonController;
+
 
     @Test
     public void listofCity() {
