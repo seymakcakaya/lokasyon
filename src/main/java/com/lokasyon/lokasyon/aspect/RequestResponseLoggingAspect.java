@@ -31,7 +31,7 @@ public class RequestResponseLoggingAspect  {
         long elapsedTime = System.currentTimeMillis() - startTime;
         if (result instanceof ResponseEntity) {
             ResponseEntity<?> responseEntity = (ResponseEntity<?>) result;
-            logger.info("Method {} executed in {} ms-Response: Status {}", joinPoint.getSignature(),elapsedTime,responseEntity.getStatusCode());
+            logger.info("Method {} executed in {} ms - Response: Status {}", joinPoint.getSignature(),elapsedTime,responseEntity.getStatusCode());
         }
         return result;
     }

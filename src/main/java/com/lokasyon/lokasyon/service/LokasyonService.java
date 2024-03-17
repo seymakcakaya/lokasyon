@@ -13,13 +13,13 @@ public interface LokasyonService {
 
     List<DistrictDto> getDistrictsByCity(String city);
 
-    List<NeighborhoodDto> getNeighborhoodsByTown(String city, String town);
+    List<NeighborhoodDto> getNeighborhoodsByTownAndCity(String city, String town);
 
-    List<LocationDto> getLocationByZipCode(String zipcode);
+    List<LocationDto> findLocationsByZipCode(String zipcode);
 
-    List<LocationDto> getLocations(String city);
+    List<LocationDto> getAllLocationsByCity(String city);
 
-    LocationDto getCityAndDistrictAndTownByZipCode(String zipCode);
+    LocationDto getLocationInfoByZipCode(String zipCode);
 
 
 }
