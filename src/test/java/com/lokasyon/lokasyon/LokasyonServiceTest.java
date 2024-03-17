@@ -34,12 +34,13 @@ public class LokasyonServiceTest {
     @Test
     public void getLocationByZipCode() {
         //"ADANA"	"CEYHAN"	"BÜYÜKMANGIT"	"1922"
-        LocationDto locationDto = new LocationDto("ADANA", "CEYHAN", "BÜYÜKMANGIT", "", "1922");
+        LocationDto locationDto = LocationDto.builder().city("ADANA").district("CEYHAN").town("BÜYÜKMANGIT").zipCode("1922").build();
+
         when(lokasyonRepository.getCityAndDistrictByZipCode(anyString())).thenReturn(Optional.of(locationDto));
         LocationDto actual = lokasyonService.getCityAndDistrictAndTownByZipCode("1922");
-        assertEquals(locationDto.city(), actual.city());
-        assertEquals(locationDto.town(), actual.town());
-        assertEquals(locationDto.district(), actual.district());
+        assertEquals(locationDto.getCity(), actual.getCity());
+        assertEquals(locationDto.getTown(), actual.getTown());
+        assertEquals(locationDto.getDistrict(), actual.getDistrict());
 
     }
 
@@ -48,7 +49,7 @@ public class LokasyonServiceTest {
         String city = "İçel";
         when(lokasyonRepository.getAllLocation(anyString())).thenReturn(Optional.empty());
         Executable executable = () -> lokasyonService.getLocations(city);
-        assertThrows(NotFoundException.class, executable)
+        assertThrows(NotFoundException.class, executable);
     }
 
     @Test
