@@ -1,5 +1,15 @@
 package com.lokasyon.lokasyon.dto;
 
-public record CityDto(String city) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Data
+public class CityDto{
+    private String city;
+    public CityDto() {
+
+    }
 }
 

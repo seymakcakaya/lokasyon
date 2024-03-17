@@ -12,24 +12,26 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface LokasyonRepository extends CrudRepository<Lokasyon,Long> {
+public interface LokasyonRepository extends CrudRepository<Lokasyon, Long> {
 
-    @Query("select distinct (city) from Lokasyon ")
-    public List<CityDto> getAllCity();
+    @Query("select distinct (city) from Lokasyon order by city asc")
+    List<CityDto> getAllCity();
 
     @Query("select distinct (district) from Lokasyon  where city = :p_city  ")
+    Optional<List<DistrictDto>> getDistrictsByCity(@Param("p_city") String city);
 
-    public List<DistrictDto> getDistrictsByCity(@Param("p_city") String city);
-
-    @Query("select distinct (neighborhood) from Lokasyon  where city=:city and town=:town")
-    public List<NeighborhoodDto> getNeighborhoodsByTown(@Param("city")String city,@Param("town")String town);
-
+    @Query("select distinct (neighborhood) from Lokasyon  where city=:city and town=:town order by neighborhood ")
+    Optional<List<NeighborhoodDto>> getNeighborhoodsByTown(@Param("city") String city, @Param("town") String town);
 
     @Query("select city,district,town,neighborhood,zip_code from Lokasyon where zip_code =:code")
-    List<LocationDto> findLocationByZipCode(@Param("code") String zipcode);
+    Optional<List<LocationDto>> findLocationByZipCode(@Param("code") String zipcode);
 
     @Query("select city,district,town,neighborhood,zip_code from lokasyon where city =:pCity")
-    List<LocationDto> getAllLocation(@Param("pCity") String city);
+    Optional<List<LocationDto>> getAllLocation(@Param("pCity") String city);
+
+    @Query("select  city,district,town, zip_code from lokasyon  where zip_code=:code group by city,district,town, zip_code ;")
+    Optional<LocationDto> getCityAndDistrictByZipCode(@Param("code") String zipcode);
 }

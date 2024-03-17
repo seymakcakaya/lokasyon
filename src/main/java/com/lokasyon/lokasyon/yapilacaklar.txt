@@ -1,9 +1,9 @@
 Projede ekteki dosyada bulunan bilgileri bir veri tabanına yükleyip Rest servis olarak dışarı açmanı bekliyoruz.
 
 İstekler;
-İllerin listelenmesi
-İllere ait ilçelerin listelenmesi
-İlçelere ait Mahallelerin listelenmesi
+İllerin listelenmesi+/cities
+İllere ait ilçelerin listelenmesi+ {city}/district
+İlçelere ait Mahallelerin listelenmesi+neighborhood
 Teknolojiler;
  Java 21, Spring Boot 3
 Spring Cache, Spring Data JDBC

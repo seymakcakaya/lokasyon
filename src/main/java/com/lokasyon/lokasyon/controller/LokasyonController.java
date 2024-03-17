@@ -5,10 +5,11 @@ import com.lokasyon.lokasyon.dto.CityDto;
 import com.lokasyon.lokasyon.dto.DistrictDto;
 import com.lokasyon.lokasyon.dto.LocationDto;
 import com.lokasyon.lokasyon.dto.NeighborhoodDto;
-import com.lokasyon.lokasyon.service.ILokasyonService;
+import com.lokasyon.lokasyon.service.LokasyonService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +20,10 @@ import java.util.List;
 
 public class LokasyonController {
 
-    private ILokasyonService lokasyonService;
+    private LokasyonService lokasyonService;
 
     @Autowired
-    public LokasyonController(ILokasyonService lokasyonService) {
+    public LokasyonController(LokasyonService lokasyonService) {
         this.lokasyonService = lokasyonService;
     }
 
@@ -33,29 +34,35 @@ public class LokasyonController {
         return ResponseEntity.ok(lokasyonService.getAllCitys());
     }
 
-    @GetMapping("/{city}/district")
+    @GetMapping("/{city}/districts")
     @Operation(summary = "List Of district", description = "Bu method belirli şehire ait tüm ilçeleri listeler")
-    public List<DistrictDto> getAllDistricts(@PathVariable("city") String city) {
-        return lokasyonService.getDistrictsByCity(city);
+    public ResponseEntity<List<DistrictDto>> getAllDistricts(@PathVariable("city") String city) {
+        List<DistrictDto> districList=lokasyonService.getDistrictsByCity(city);
+        if (districList==null)
+            return new ResponseEntity<>(districList, HttpStatus.NOT_FOUND);
+        return  new ResponseEntity<>(districList, HttpStatus.OK);
     }
 
-    @GetMapping("/neighborhood")
+    @GetMapping("/neighborhoods")
     @Operation(summary = "List Of neighborhood", description = "Bu method ilçelere ait mahalleri listeler")
-    public List<NeighborhoodDto> getAllneighborhood(@RequestParam(value = "city", required = true) String city, @RequestParam(value = "district", required = true) String district) {
-        return lokasyonService.getNeighborhoodsByTown(city, district);
-    }
-
-    @GetMapping("/zipcode")
-    @Operation(summary = "List Of neighborhood", description = "Bu method ilçelere ait mahalleri listeler")
-    public List<LocationDto> getAllneighborhood(@RequestParam(value = "code", required = false) String code ) {
-        return lokasyonService.getLocationByZipCode(code);
+    public ResponseEntity<List<NeighborhoodDto> >getAllneighborhood(@RequestParam(value = "city", required = true) String city, @RequestParam(value = "district", required = true) String district) {
+        return ResponseEntity.ok(lokasyonService.getNeighborhoodsByTown(city, district));
     }
     @GetMapping("/locations")
-
+    @Operation(summary = "List Of Location", description = "Bu method posta konuna göre tüm lokasyonları  listeler")
+    public ResponseEntity<List<LocationDto>> getLocationByZipCode(@RequestParam(value = "code") String code ) {
+            List<LocationDto>locationDtoList =  lokasyonService.getLocationByZipCode(code);
+            return new ResponseEntity<>(locationDtoList,HttpStatus.OK);
+    }
+    @GetMapping("/{city}/locations")
     @Operation(summary = "Lokasyon Bilgileri", description = "Bu method  belirli şehirdeki tüm lokasyonları listeler")
-    public ResponseEntity<List<LocationDto>> getLocations(@RequestParam String city) {
+    public ResponseEntity<List<LocationDto>> getLocations(@PathVariable("city") String city) {
         return ResponseEntity.ok(lokasyonService.getLocations(city));
     }
-
+    @GetMapping("/district/{zipcode}")
+    @Operation(summary = "ilçe Bilgileri", description = "Bu method girilen zip koda ait ilçe ve şehir ve semt  bilgilerini gösterir.")
+    public ResponseEntity<LocationDto> getDistictByZipCode(@PathVariable("zipcode") String zipCode) {
+        return ResponseEntity.ok(lokasyonService.getCityAndDistrictAndTownByZipCode(zipCode));
+    }
 
 }
