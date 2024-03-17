@@ -1,6 +1,7 @@
 package com.lokasyon.lokasyon.service;
 
 import com.lokasyon.lokasyon.dto.CityDto;
+import com.lokasyon.lokasyon.dto.LocationDto;
 import com.lokasyon.lokasyon.exception.NotFoundException;
 import com.lokasyon.lokasyon.repository.LokasyonRepository;
 import org.junit.jupiter.api.Test;
@@ -40,33 +41,43 @@ class LokasyonServiceImplTest {
         assertEquals(cityDto.getCity(), actual.get(0).getCity());
 
 
-
-
     }
 
     @Test
     void getDistrictsByCity_shoulThrowExcepiton() {
         //given
         String city = "İçel";
-        when(lokasyonRepository.getAllLocation(anyString())).thenReturn(Collections.EMPTY_LIST);
+        when(lokasyonRepository.getAllLocationsByCity(anyString())).thenReturn(Collections.EMPTY_LIST);
         // when then
-        assertThrows(NotFoundException.class, () ->lokasyonService.getLocations(city));
+        assertThrows(NotFoundException.class, () -> lokasyonService.getAllLocationsByCity(city));
 
     }
 
     @Test
-    void getNeighborhoodsByTown() {
+    void getNeighborhoodsByTownAndCity_shouldThrowException() {
+        String city = "istanbul";
+        String town = "Kayaşehir";
+        when(lokasyonRepository.getNeighborhoodsByTownAndCity(anyString(), anyString())).thenReturn(Collections.EMPTY_LIST);
+        assertThrows(NotFoundException.class, () -> lokasyonService.getNeighborhoodsByTownAndCity(city, town));
     }
 
     @Test
     void getLocationByZipCode() {
+        String zipCode = "1";
+        when(lokasyonRepository.getLocationInfoByZipCode(anyString())).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> lokasyonService.findLocationsByZipCode(zipCode));
     }
 
-    @Test
-    void getLocations() {
-    }
 
     @Test
     void getCityAndDistrictAndTownByZipCode() {
+        LocationDto locationDto = LocationDto.builder().city("ADANA").district("CEYHAN").town("BÜYÜKMANGIT").zipCode("1922").build();
+
+        when(lokasyonRepository.getLocationInfoByZipCode(anyString())).thenReturn(Optional.of(locationDto));
+
+        LocationDto actual = lokasyonService.getLocationInfoByZipCode("1922");
+        assertEquals(locationDto.getCity(), actual.getCity());
+        assertEquals(locationDto.getTown(), actual.getTown());
+        assertEquals(locationDto.getDistrict(), actual.getDistrict());
     }
 }
