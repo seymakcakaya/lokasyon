@@ -2,6 +2,7 @@ package com.lokasyon.lokasyon.service;
 
 import com.lokasyon.lokasyon.dto.CityDto;
 import com.lokasyon.lokasyon.dto.LocationDto;
+import com.lokasyon.lokasyon.exception.NeighborhoodNotFoundException;
 import com.lokasyon.lokasyon.exception.NotFoundException;
 import com.lokasyon.lokasyon.repository.LokasyonRepository;
 import org.junit.jupiter.api.Test;
@@ -58,13 +59,15 @@ class LokasyonServiceImplTest {
         String city = "istanbul";
         String town = "Kayaşehir";
         when(lokasyonRepository.getNeighborhoodsByTownAndCity(anyString(), anyString())).thenReturn(Collections.EMPTY_LIST);
-        assertThrows(NotFoundException.class, () -> lokasyonService.getNeighborhoodsByTownAndCity(city, town));
+        assertThrows(NeighborhoodNotFoundException.class, () -> lokasyonService.getNeighborhoodsByTownAndCity(city, town));
     }
 
     @Test
     void getLocationByZipCode() {
+
+
         String zipCode = "1";
-        when(lokasyonRepository.getLocationInfoByZipCode(anyString())).thenReturn(Optional.empty());
+        when(lokasyonRepository.findLocationsByZipCode(anyString())).thenThrow(NotFoundException.class);
         assertThrows(NotFoundException.class, () -> lokasyonService.findLocationsByZipCode(zipCode));
     }
 
